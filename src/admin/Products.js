@@ -20,8 +20,8 @@ const Products = () => {
 
     return (
         <Wrapper>
-            <div class="table-responsive">
-                <table class="table table-striped table-sm">
+            <div className="table-responsive">
+                <table className="table table-striped table-sm">
                     <thead>
                         <tr>
                             <th>Num</th>
@@ -36,14 +36,14 @@ const Products = () => {
                             return (
                                 <tr key={p.id}>
                                     <td>{p.id}</td>
-                                    <td><img src={p.image} height="180" /></td>
+                                    <td><img src={p.image} height="180" alt="" /></td>
                                     <td>{p.title}</td>
                                     <td>{p.likes}</td>
                                     <td></td>
                                 </tr>
                             )
                         })}
-                        
+
                     </tbody>
                 </table>
             </div>
