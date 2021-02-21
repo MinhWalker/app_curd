@@ -1,17 +1,32 @@
-import React, {useState} from 'react'
+import React, { useState, useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 import Wrapper from './Wrapper'
 
-const ProductsEdit = () => {
+const ProductsEdit = (props) => {
     const [title, setTitle] = useState('')
     const [image, setImage] = useState('')
     const [redirect, setRedirect] = useState(false)
 
+    useEffect(() => {
+        (
+            async () => {
+                const response = await fetch(`http://localhost:8000/api/products/${props.match.params.id}`)
+
+                const product = await response.json()
+
+                setTitle(product.title)
+                setImage(product.image)
+            }
+        )()
+    }, [])
+
+
     const submit = async (e) => {
         e.preventDefault()
-        await fetch('http://localhost:8000/api/products', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+        
+        await fetch(`http://localhost:8000/api/products/${props.match.params.id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 title: title,
                 image: image
@@ -21,7 +36,7 @@ const ProductsEdit = () => {
         setRedirect(true)
     }
 
-    if(redirect) {
+    if (redirect) {
         return <Redirect to={'/admin/products'} />
     }
 
@@ -31,12 +46,14 @@ const ProductsEdit = () => {
                 <div className="form-group">
                     <label>Title</label>
                     <input type="text" className="form-control" name="title"
+                        defaultValue={title}
                         onChange={e => setTitle(e.target.value)}
                     />
                 </div>
                 <div className="form-group">
                     <label>Image</label>
                     <input type="text" className="form-control" name="image"
+                        defaultValue={image}
                         onChange={e => setImage(e.target.value)}
                     />
                 </div>
